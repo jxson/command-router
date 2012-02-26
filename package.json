@@ -1,0 +1,21 @@
+{
+  "author": "Jason Campbell <jason@spire.io> (http://spire.io)",
+  "name": "command-router",
+  "description": "A simple router and parser for CLI apps with multiple commands",
+  "version": "0.0.0",
+  "homepage": "http://foo.com",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jxson/command-router.git"
+  },
+  "main": "lib/command-router/index.js",
+  "scripts": {
+    "test": "foo"
+  },
+  "engines": {
+    "node": "~0.6.11"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {}
+}
