@@ -3,7 +3,7 @@ var assert = require('../assert')
 ;
 
 describe('cli', function(){
-  it('should be a CLI instance', function(){
+  it('is a CLI instance', function(){
     assert.isObject(cli, 'cli is NOT an object');
     assert.isFunction(cli.command, 'command is NOT a method');
     assert.isFunction(cli.option, 'option is NOT a method');
@@ -11,7 +11,7 @@ describe('cli', function(){
     assert.isFunction(cli.dispatch, 'dispatch is NOT a method');
   });
 
-  it('should have a CLI class constructor', function(){
+  it('has a CLI class constructor as a property', function(){
     var instance
     ;
 
