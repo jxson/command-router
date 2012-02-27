@@ -25,14 +25,14 @@ The `params` object allows additional information to be set about the option bei
 
 If a `params` object is not passed in the option will be defined as a `Boolean` value defaulting to false without an alias:
 
-  cli.option('verbose')
+    cli.option('verbose')
 
 Is the equivalent to:
 
-  cli.option('verbose', { alias: 'v'
-  , default: false
-  , type: Boolean
-  });
+    cli.option('verbose', { alias: 'v'
+    , default: false
+    , type: Boolean
+    });
 
 ## Examples
 
@@ -43,4 +43,4 @@ To set an option for something like a `path` to a config file:
     , type: path
     });
 
-[nopt]: #
+[nopt]: https://github.com/isaacs/nopt
