@@ -2,7 +2,7 @@ var assert = require('../assert')
   , cli = require('../../lib/command-router')
 ;
 
-describe('.option(params)', function(){
+describe('cli.option(params)', function(){
   it('returns the cli instance ', function(){
     assert.equal(cli.option({ flag: 'foo' })
     , cli
