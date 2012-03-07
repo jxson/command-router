@@ -29,9 +29,8 @@ If a `params` object is not passed in the option will be defined as a `Boolean` 
 
 Is the equivalent to:
 
-    cli.option('verbose', { alias: 'v'
+    cli.option('verbose', { type: Boolean
     , default: false
-    , type: Boolean
     });
 
 ## Examples
