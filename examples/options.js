@@ -1,12 +1,9 @@
 var path = require('path')
+  , cli = require('../lib/command-router')
 ;
 
 // A basic Boolean option that defaults to false
 cli.option('verbose');
-
-cli.on('end', function(){
-  console.log('cli.options', this.options);
-});
 
 // Define an option for something like a path to a config file
 cli.option({ name: 'config'
@@ -15,4 +12,8 @@ cli.option({ name: 'config'
 , type: path
 });
 
+console.log('process.argv', process.argv);
+
 cli.parse(process.argv);
+
+console.log('cli.options', cli.options);
