@@ -1,4 +1,5 @@
 var cli = require('../lib/command-router')
+  , colors = require('colors')
 ;
 
 cli.command('help', function(){
@@ -8,9 +9,15 @@ cli.command('help', function(){
 });
 
 cli.command('list :pile', function(){
-  console.log('showing ', this.params['thing'])
+  console.log('showing'.green, this.params['thing'])
 })
 
-cli.command(/show (\.*)/, function(){
-  console.log('showing ', this.params['splat'])
+cli.command(/show (.*)$/, function(){
+  console.log('showing'.green, this.params['splat'])
 })
+
+cli.command(/show (.*) stuff$/, function(){
+  console.log('showing'.green, this.params['splat'])
+})
+
+cli.parse(process.argv)
