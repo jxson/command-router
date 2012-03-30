@@ -80,3 +80,22 @@ describe('router', function(){
     }); // describe('when `path` is a string ', ...
   }); // describe('.route(path, callback)', ...
 }); // describe('router', ...
+
+/*
+
+the router needs:
+
+* A way to dispatch paths (trigger the callbacks)
+
+# string routes
+
+* access to the named params
+
+# regex routes
+
+* access to splat params (the regex matches)
+* trigger more than one route based on the matching
+
+https://github.com/aaronblohowiak/routes.js
+
+*/
