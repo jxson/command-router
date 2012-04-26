@@ -22,16 +22,19 @@ command-router command() -- Define routes for your CLI's commands
 ### Using a string
 
     cli.command('speak dog', function(){
+      console.log('woof.')
     })
 
 ### Using a string with a named param
 
     cli.command('speak :animal', function(){
+      console.log(this.params.animal)
     })
 
 ### Using a Regex
 
-    cli.command(/speak (\.*)/, function(){
+    cli.command(/speak (.*)/, function(){
+      console.log(this.params.splat)
     })
 
 ## SEE AlSO

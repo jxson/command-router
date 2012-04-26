@@ -8,16 +8,20 @@ cli.command('help', function(){
   console.log('')
 });
 
-cli.command('list :pile', function(){
-  console.log('showing'.green, this.params['thing'])
+cli.command('speak dog', function(){
+  console.log('woof.')
 })
 
-cli.command(/show (.*)$/, function(){
-  console.log('showing'.green, this.params['splat'])
+cli.command('speak :language', function(){
+  console.log(this.params['language'])
 })
 
-cli.command(/show (.*) stuff$/, function(){
-  console.log('showing'.green, this.params['splat'])
+cli.command('star *', function(){
+  console.log(this.params.splats)
+})
+
+cli.command(/search (.*)$/, function(){
+  console.log(this.params.splats)
 })
 
 cli.parse(process.argv)
