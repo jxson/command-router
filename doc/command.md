@@ -31,9 +31,15 @@ command-router command() -- Define routes for your CLI's commands
       console.log(this.params.animal)
     })
 
+### Using splats
+
+    cli.command('speak *', function(){
+      console.log(this.params.splat)
+    })
+
 ### Using a Regex
 
-    cli.command(/speak (.*)/, function(){
+    cli.command(/speak (.*)$/, function(){
       console.log(this.params.splat)
     })
 
