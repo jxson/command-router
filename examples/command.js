@@ -1,5 +1,4 @@
 var cli = require('../lib/command-router')
-  , colors = require('colors')
 ;
 
 cli.command('help', function(){
