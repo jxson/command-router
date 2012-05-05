@@ -11,7 +11,9 @@
   "test": "node_modules/mocha/bin/mocha test/*/*.js"
   }
 , "engines": { "node": "~0.6.11" }
-, "dependencies": { "nopt": "1.0.10" }
+, "dependencies": { "nopt": "1.0.10"
+  , "routes": "0.1.1"
+  }
 , "devDependencies": { "mocha": "0.13.0"
   , "colors": "0.6.0-1"
   }
