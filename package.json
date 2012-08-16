@@ -1,7 +1,7 @@
 { "name": "command-router"
 , "author": "Jason Campbell <jason@spire.io> (http://spire.io)"
 , "description": "A simple router and parser for CLI apps with multiple commands"
-, "version": "0.0.2"
+, "version": "0.0.3"
 , "homepage": "http://github.com/jxson/command-router"
 , "repository": { "type": "git"
   , "url": "git://github.com/jxson/command-router.git"
