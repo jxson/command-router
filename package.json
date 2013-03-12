@@ -1,16 +1,21 @@
 {
   "name": "command-router",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A simple CLI router apps with multiple commands",
+  "keywords": [
+    "cli",
+    "command",
+    "line",
+    "args",
+    "arguments",
+    "option",
+    "command"
+  ],
+  "author": "Jason Campbell <jason@js.la> (http://js.la)",
   "main": "index.js",
-  "directories": {
-    "doc": "doc",
-    "example": "examples",
-    "test": "test"
-  },
   "dependencies": {
-    "nopt": "~1.0.10",
-    "routes": "~0.1.1"
+    "nopt": "2.1.1",
+    "routes": "0.1.1"
   },
   "devDependencies": {
     "mocha": "1.8.2"
@@ -22,16 +27,8 @@
     "type": "git",
     "url": "git://github.com/jxson/command-router.git"
   },
-  "keywords": [
-    "cli",
-    "command",
-    "line",
-    "args",
-    "arguments",
-    "option",
-    "command"
-  ],
-  "author": "Jason Campbell <jason@js.la> (http://js.la)",
-  "engines": { "node": "> 0.6.6" },
+  "engines": {
+    "node": "> 0.6.6"
+  },
   "license": "MIT"
 }
