@@ -1,71 +1,65 @@
-var CLI
-  , nopt = require('nopt')
+
+var nopt = require('nopt')
   , path = require('path')
   , Router = require('routes').Router
-;
+  , props = { defaults: { value: {} }
+    , __router: { value: undefined }
+    , knownOptions: { value: {} }
+    , shortHands: { value: {} }
+    , router: { get: getRouter }
+  }
 
-CLI = function(options){
+module.exports = Object.create({ command: command
+, option: option
+, parse: parse
+, dispatch: dispatch
+}, props)
+
+function command(route, fn){
   var cli = this
-    , options = options || {}
-  ;
+    , route = route || '/'
 
-  cli.slice = options.slice || 2
-  cli.knownOptions = {}
-  cli.shortHands = {}
-  cli.defaults = {}
-  cli.router = new Router()
-};
-
-CLI.prototype.command = function(path, callback){
-  var cli = this
-    , path = path || '/'
-
-  cli.router.addRoute(path, callback)
+  cli.router.addRoute(route, fn)
 
   return cli
-};
+}
 
-CLI.prototype.option = function(name, params) {
+function option(name, opts){
   var cli = this
-    , params = typeof(name) === 'object' ? name : params || {}
-  ;
+    , opts = typeof(name) === 'object' ? name : opts || {}
 
-  if (!params.name) params.name = name;
+  if (!opts.name) opts.name = name
 
-  if (! params.type) params.type = Boolean;
-  if (! params.default) params.default = false;
+  if (! opts.type) opts.type = Boolean
+  if (! opts.default) opts.default = false
 
-  cli.knownOptions[params.name] = params.type;
+  cli.knownOptions[opts.name] = opts.type
 
-  if (params.alias) cli.shortHands[params.alias] = '--' + params.name;
+  if (opts.alias) cli.shortHands[opts.alias] = '--' + opts.name
 
-  if (typeof(params.default) !== 'undefined') {
-    if (params.type === path) {
-      cli.defaults[params.name] = path.resolve(params.default)
+  if (typeof opts.default !== undefined) {
+    if (opts.type === path) {
+      cli.defaults[opts.name] = path.resolve(opts.default)
     } else {
-      cli.defaults[params.name] = params.default
+      cli.defaults[opts.name] = opts.default
     }
   }
 
-  return cli;
-};
+  return cli
+}
 
-// defaults to process.argv
-CLI.prototype.parse = function(argv) {
+function parse(argv) {
   var cli = this
     , options = {}
     , shorthands = {}
     , parsed
     , route
-  ;
 
-  cli.options = nopt(cli.knownOptions, cli.shortHands, argv, cli.slice);
+  cli.options = nopt(cli.knownOptions, cli.shortHands, argv, 2)
 
-  // apply defaults
   Object.keys(cli.defaults).forEach(function(name){
-    // things can be overridden with the --no-whatev
-    if (cli.options[name] === false) return;
-    if (! cli.options[name]) cli.options[name] = cli.defaults[name];
+    if (cli.options[name] === false) return
+    if (! cli.options[name]) cli.options[name] = cli.defaults[name]
   });
 
   if (cli.options.argv.remain) {
@@ -74,10 +68,10 @@ CLI.prototype.parse = function(argv) {
     cli.path = ''
   }
 
-  cli.dispatch(cli.path);
-};
+  cli.dispatch(cli.path)
+}
 
-CLI.prototype.dispatch = function(path) {
+function dispatch(path) {
   var cli = this
     , path = path || '/'
     , route = cli.router.match(path)
@@ -88,7 +82,9 @@ CLI.prototype.dispatch = function(path) {
   if (route.splats.length) cli.params['splats'] = route.splats
 
   route.fn.call(cli)
-};
+}
 
-module.exports = new CLI();
-module.exports.CLI = CLI;
+// utility for getting the router
+function getRouter(){
+  return this.__router || (this.__router = new Router())
+}
