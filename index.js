@@ -3,7 +3,7 @@ var nopt = require('nopt')
   , path = require('path')
   , Router = require('routes').Router
   , props = { defaults: { value: {} }
-    , __router: { value: undefined }
+    , __router: { value: undefined, writable: true }
     , knownOptions: { value: {} }
     , shortHands: { value: {} }
     , router: { get: getRouter }
