@@ -32,6 +32,7 @@
     "command"
   ],
   "author": "Jason Campbell <jason@js.la> (http://js.la)",
+  "engines": { "node": "> 0.6.6" },
   "license": "MIT",
   "readmeFilename": "README.md",
   "gitHead": "0bbb266fc77263df8c036d10664ce8a3dca3592e"
