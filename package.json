@@ -1,20 +1,38 @@
-{ "name": "command-router"
-, "author": "Jason Campbell <jason@spire.io> (http://spire.io)"
-, "description": "A simple router and parser for CLI apps with multiple commands"
-, "version": "0.0.3"
-, "homepage": "http://github.com/jxson/command-router"
-, "repository": { "type": "git"
-  , "url": "git://github.com/jxson/command-router.git"
-  }
-, "main": "lib/command-router/index.js"
-, "scripts": {
-  "test": "node_modules/mocha/bin/mocha test/*/*.js"
-  }
-, "engines": { "node": "~0.6.6" }
-, "dependencies": { "nopt": "1.0.10"
-  , "routes": "0.1.1"
-  }
-, "devDependencies": { "mocha": "0.13.0"
-  , "colors": "0.6.0-1"
-  }
+{
+  "name": "command-router",
+  "version": "0.0.3",
+  "description": "A simple CLI router apps with multiple commands",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc",
+    "example": "examples",
+    "test": "test"
+  },
+  "dependencies": {
+    "nopt": "~1.0.10",
+    "routes": "~0.1.1"
+  },
+  "devDependencies": {
+    "mocha": "1.8.2"
+  },
+  "scripts": {
+    "test": "mocha test/test-*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jxson/command-router.git"
+  },
+  "keywords": [
+    "cli",
+    "command",
+    "line",
+    "args",
+    "arguments",
+    "option",
+    "command"
+  ],
+  "author": "Jason Campbell <jason@js.la> (http://js.la)",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "gitHead": "0bbb266fc77263df8c036d10664ce8a3dca3592e"
 }
