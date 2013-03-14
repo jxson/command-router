@@ -1,6 +1,6 @@
 {
   "name": "command-router",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A simple CLI router apps with multiple commands",
   "keywords": [
     "cli",
