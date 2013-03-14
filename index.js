@@ -1,6 +1,8 @@
 
-var nopt = require('nopt')
-  , path = require('path')
+var path = require('path')
+  , extend = require('util')._extend
+  , EE = require('events').EventEmitter
+  , nopt = require('nopt')
   , Router = require('routes').Router
   , props = { defaults: { value: {} }
     , __router: { value: undefined, writable: true }
@@ -13,7 +15,6 @@ module.exports = Object.create({ command: command
 , option: option
 , parse: parse
 , dispatch: dispatch
-, default: function(path){ process.exit(1) }
 }, props)
 
 extend(module.exports, EE.prototype)
@@ -53,10 +54,6 @@ function option(name, opts){
 
 function parse(argv) {
   var cli = this
-    , options = {}
-    , shorthands = {}
-    , parsed
-    , route
 
   cli.options = nopt(cli.knownOptions, cli.shortHands, argv, 2)
 
@@ -77,14 +74,20 @@ function parse(argv) {
 function dispatch(path) {
   var cli = this
     , path = path || '/'
+    , action = (path === '/') ? '' : path
     , route = cli.router.match(path)
 
-  if (! route) return cli.default(path)
+  if (! route) {
+    if (cli.listeners('notfound').length === 0) {
+      throw new Error('No CLI action defined for: "' + action + '"')
+    } else return cli.emit('notfound', action)
+  }
 
   cli.params = route.params
-  if (route.splats.length) cli.params['splats'] = route.splats
 
-  route.fn.call(cli)
+  if (route.splats.length) cli.params.splats = route.splats
+
+  route.fn.call(cli, cli.params, cli.options)
 }
 
 // utility for getting the router

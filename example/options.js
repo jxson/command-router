@@ -1,6 +1,5 @@
 var path = require('path')
-  , cli = require('../lib/command-router')
-;
+  , cli = require('../')
 
 // A basic Boolean option that defaults to false
 cli.option('verbose');
@@ -10,10 +9,11 @@ cli.option({ name: 'config'
 , alias: 'c'
 , default: '.haiku/config.js'
 , type: path
-});
+})
 
-console.log('process.argv', process.argv);
+cli.command('', function(params, options){
+  console.log('params:', params)
+  console.log('options:', options)
+})
 
 cli.parse(process.argv);
-
-console.log('cli.options', cli.options);

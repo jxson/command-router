@@ -12,7 +12,7 @@ var assert = require('assert')
 
 describe('cli.option(name, [opts])', function(){
   before(function(){
-    cli.default = noop;
+    cli.on('notfound', noop)
   })
 
   it('is chain-able', function(){
