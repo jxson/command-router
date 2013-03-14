@@ -13,7 +13,10 @@ module.exports = Object.create({ command: command
 , option: option
 , parse: parse
 , dispatch: dispatch
+, default: function(path){ process.exit(1) }
 }, props)
+
+extend(module.exports, EE.prototype)
 
 function command(route, fn){
   var cli = this
@@ -76,7 +79,7 @@ function dispatch(path) {
     , path = path || '/'
     , route = cli.router.match(path)
 
-  if (! route) return
+  if (! route) return cli.default(path)
 
   cli.params = route.params
   if (route.splats.length) cli.params['splats'] = route.splats

@@ -11,6 +11,10 @@ var assert = require('assert')
     }
 
 describe('cli.option(name, [opts])', function(){
+  before(function(){
+    cli.default = noop;
+  })
+
   it('is chain-able', function(){
     assert.equal(cli.option('foo'), cli)
   })
