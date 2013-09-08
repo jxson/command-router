@@ -1,7 +1,7 @@
 {
   "name": "command-router",
   "version": "0.0.5",
-  "description": "A simple CLI router apps with multiple commands",
+  "description": "A simple CLI router for apps with sub-commands (like git)",
   "keywords": [
     "cli",
     "command",
