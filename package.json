@@ -14,8 +14,8 @@
   "author": "Jason Campbell <jason@js.la> (http://js.la)",
   "main": "index.js",
   "dependencies": {
-    "nopt": "2.1.1",
-    "routes": "0.1.1"
+    "routes": "~0.2.0",
+    "nopt": "~2.1.2"
   },
   "devDependencies": {
     "mocha": "1.8.2"
