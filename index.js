@@ -41,9 +41,6 @@ CommandRouter.prototype.parse = function(argv) {
     if (! cli.options[name]) cli.options[name] = cli.defaults[name]
   });
 
-  console.log('cli.options.argv', cli.options.argv)
-
-
   cli.path = cli.options.argv.remain.join(' ')
 
 
