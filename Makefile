@@ -1,7 +1,7 @@
 
 PATH := node_modules/.bin:$(PATH)
 SHELL := /bin/bash -e -o pipefail
-VERSION := patch
+VERSION ?= patch
 
 node_modules: package.json
 	@npm prune
