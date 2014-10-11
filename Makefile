@@ -8,7 +8,7 @@ node_modules: package.json
 	@npm install
 	@touch node_modules
 
-coverage: index.js node_modules
+coverage: index.js test/* node_modules
 	@istanbul cover --report html --print detail ./test/index.js
 
 coveralls: coverage

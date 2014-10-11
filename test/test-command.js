@@ -1,16 +1,7 @@
 
 var test = require('tape')
 var ComandRouter = require('../')
-var EventEmitter = require('events').EventEmitter
 var run = require('./run')
-
-test('var cli = router()', function(t) {
-  t.equal(typeof ComandRouter, 'function')
-  t.ok(new ComandRouter() instanceof ComandRouter)
-  t.ok(ComandRouter() instanceof ComandRouter)
-  t.ok(ComandRouter() instanceof EventEmitter)
-  t.end()
-})
 
 test('cli.command("route", callback)', function(t) {
   var cli = ComandRouter()
@@ -52,6 +43,28 @@ test('cli.command("splats *")', function(t) {
   })
 
   run(cli, 'freeze Han Solo')
+})
+
+test('no routes', function(t) {
+  var cli = ComandRouter()
+
+  cli.on('notfound', function(action) {
+    t.equal(action, 'foo')
+  })
+
+  run(cli, 'foo')
+
+  t.end()
+})
+
+test('cli.on("notfound")', function(t) {
+  var cli = ComandRouter()
+
+  t.throws(function() {
+    cli.parse([ '', '' ])
+  })
+
+  t.end()
 })
 
 function noop() {}

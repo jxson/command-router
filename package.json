@@ -16,9 +16,11 @@
   "dependencies": {
     "nopt": "^3.0.1",
     "routes": "^1.2.0",
+    "tape": "^3.0.0",
     "xtend": "^4.0.0"
   },
   "devDependencies": {
+    "istanbul": "^0.3.2",
     "tape": "^3.0.0"
   },
   "scripts": {
