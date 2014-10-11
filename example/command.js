@@ -1,4 +1,4 @@
-var cli = require('../')
+var cli = require('../')()
 
 cli.command('help', function(){
   console.log('   description: an example of a command-router app')

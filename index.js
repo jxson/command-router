@@ -1,36 +1,77 @@
-
+var extend = require('xtend')
+var inherits = require('util').inherits
+var EE = require('events').EventEmitter
+var Router = require('routes')
+var nopt = require('nopt')
 var path = require('path')
-  , extend = require('util')._extend
-  , EE = require('events').EventEmitter
-  , nopt = require('nopt')
-  , Router = require('routes').Router
-  , props = { defaults: { value: {} }
-    , __router: { value: undefined, writable: true }
-    , knownOptions: { value: {} }
-    , shortHands: { value: {} }
-    , router: { get: getRouter }
-  }
 
-module.exports = Object.create({ command: command
-, option: option
-, parse: parse
-, dispatch: dispatch
-}, props)
+module.exports = CommandRouter
 
-extend(module.exports, EE.prototype)
+function CommandRouter(options) {
+  if (!(this instanceof CommandRouter)) return new CommandRouter(options)
 
-function command(route, fn){
   var cli = this
-    , route = route || '/'
 
-  cli.router.addRoute(route, fn)
+  cli.router = new Router()
+  cli.knownOptions = {}
+  cli.shortHands = {}
+  cli.defaults = {}
+
+  EE.call(cli)
+}
+
+inherits(CommandRouter, EE)
+
+CommandRouter.prototype.command = function(route, callback) {
+  var cli = this
+  var route = route || '/'
+
+  cli.router.addRoute(route, callback)
 
   return cli
 }
 
-function option(name, opts){
+CommandRouter.prototype.parse = function(argv) {
   var cli = this
-    , opts = typeof(name) === 'object' ? name : opts || {}
+
+  cli.options = nopt(cli.knownOptions, cli.shortHands, argv, 2)
+
+  Object.keys(cli.defaults).forEach(function(name){
+    if (cli.options[name] === false) return
+    if (! cli.options[name]) cli.options[name] = cli.defaults[name]
+  });
+
+  if (cli.options.argv.remain) {
+    cli.path = cli.options.argv.remain.join(' ')
+  } else {
+    cli.path = ''
+  }
+
+  cli.dispatch(cli.path)
+}
+
+CommandRouter.prototype.dispatch = function(path) {
+  var cli = this
+  var path = path || '/'
+  var action = (path === '/') ? '' : path
+  var route = cli.router.match(path)
+
+  if (! route) {
+    if (cli.listeners('notfound').length === 0) {
+      throw new Error('No CLI action defined for: "' + action + '"')
+    } else return cli.emit('notfound', action)
+  }
+
+  cli.params = route.params
+
+  if (route.splats.length) cli.params.splats = route.splats
+
+  route.fn.call(cli, cli.params, cli.options)
+}
+
+CommandRouter.prototype.option = function(name, opts) {
+  var cli = this
+  var opts = typeof(name) === 'object' ? name : opts || {}
 
   if (!opts.name) opts.name = name
 
@@ -50,47 +91,4 @@ function option(name, opts){
   }
 
   return cli
-}
-
-function parse(argv) {
-  var cli = this
-
-  cli.options = nopt(cli.knownOptions, cli.shortHands, argv, 2)
-
-  Object.keys(cli.defaults).forEach(function(name){
-    if (cli.options[name] === false) return
-    if (! cli.options[name]) cli.options[name] = cli.defaults[name]
-  });
-
-  if (cli.options.argv.remain) {
-    cli.path = cli.options.argv.remain.join(' ')
-  } else {
-    cli.path = ''
-  }
-
-  cli.dispatch(cli.path)
-}
-
-function dispatch(path) {
-  var cli = this
-    , path = path || '/'
-    , action = (path === '/') ? '' : path
-    , route = cli.router.match(path)
-
-  if (! route) {
-    if (cli.listeners('notfound').length === 0) {
-      throw new Error('No CLI action defined for: "' + action + '"')
-    } else return cli.emit('notfound', action)
-  }
-
-  cli.params = route.params
-
-  if (route.splats.length) cli.params.splats = route.splats
-
-  route.fn.call(cli, cli.params, cli.options)
-}
-
-// utility for getting the router
-function getRouter(){
-  return this.__router || (this.__router = new Router())
 }

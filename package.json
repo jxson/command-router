@@ -14,21 +14,19 @@
   "author": "Jason Campbell <jason@js.la> (http://js.la)",
   "main": "index.js",
   "dependencies": {
-    "routes": "~0.2.0",
-    "nopt": "~2.1.2"
+    "nopt": "^3.0.1",
+    "routes": "^1.2.0",
+    "xtend": "^4.0.0"
   },
   "devDependencies": {
-    "mocha": "1.8.2"
+    "tape": "^3.0.0"
   },
   "scripts": {
-    "test": "mocha test/test-*.js"
+    "test": "make test"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/jxson/command-router.git"
-  },
-  "engines": {
-    "node": "> 0.6.6"
   },
   "license": "MIT"
 }

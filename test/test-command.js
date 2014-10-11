@@ -1,45 +1,57 @@
-var assert = require('assert')
-  , cli = require('../')
-  , noop = function(){}
-  , run = function(route){
-      var args = route.split(' ')
-      args.unshift('/wherever/the/bin/is')
-      args.unshift('node')
-      cli.parse(args)
-    }
 
-describe('cli.command(route, fn)', function(){
-  it('is chain-able', function(){
-    assert.equal(cli.command('foo', noop), cli)
-  })
+var test = require('tape')
+var ComandRouter = require('../')
+var EventEmitter = require('events').EventEmitter
+var run = require('./run')
 
-  it('matches basic strings', function(done){
-    cli.command('speak jawa', function(){
-      assert.equal(typeof cli.params, 'object')
-      assert.equal(Object.keys(cli.params), 0)
-      done()
-    })
-
-    run('speak jawa')
-  })
-
-  it('matches named params', function(done){
-    cli.command('speak :language', function(){
-      assert.equal(typeof cli.params, 'object')
-      assert.equal(cli.params.language, 'jabba')
-      done()
-    })
-
-    run('speak jabba')
-  })
-
-  it('matches splats', function(done){
-    cli.command('freeze *', function(){
-      assert.ok(cli.params.splats)
-      assert.equal(cli.params.splats[0], 'Han Solo')
-      done()
-    })
-
-    run('freeze Han Solo')
-  })
+test('var cli = router()', function(t) {
+  t.equal(typeof ComandRouter, 'function')
+  t.ok(new ComandRouter() instanceof ComandRouter)
+  t.ok(ComandRouter() instanceof ComandRouter)
+  t.ok(ComandRouter() instanceof EventEmitter)
+  t.end()
 })
+
+test('cli.command("route", callback)', function(t) {
+  var cli = ComandRouter()
+
+  t.equal(cli.command('route', noop), cli, 'should be chainable')
+  t.end()
+})
+
+test('cli.command("basic string")', function(t) {
+  var cli = ComandRouter()
+
+  cli.command('speak jawa', function(params, options) {
+    t.equal(this, cli)
+    t.deepEqual(params, {})
+    t.deepEqual(cli.params, {})
+    t.end()
+  })
+
+  run(cli, 'speak jawa')
+})
+
+test('cli.command("named :param")', function(t) {
+  var cli = ComandRouter()
+
+  cli.command('speak :language', function(params, options) {
+    t.equal(cli.params.language, 'jawa')
+    t.end()
+  })
+
+  run(cli, 'speak jawa')
+})
+
+test('cli.command("splats *")', function(t) {
+  var cli = ComandRouter()
+
+  cli.command('freeze *', function(params, options) {
+    t.deepEqual(cli.params.splats, [ 'Han Solo' ])
+    t.end()
+  })
+
+  run(cli, 'freeze Han Solo')
+})
+
+function noop() {}

@@ -1,90 +1,101 @@
 
-var assert = require('assert')
-  , cli = require('../')
-  , path = require('path')
-  , noop = function(){}
-  , run = function(route){
-      var args = route.split(' ')
-      args.unshift('/wherever/the/bin/is')
-      args.unshift('node')
-      cli.parse(args)
-    }
+var test = require('tape')
+var ComandRouter = require('../')
+var path = require('path')
+var run = require('./run')
 
-describe('cli.option(name, [opts])', function(){
-  before(function(){
-    cli.on('notfound', noop)
+test('cli.option(name)', function(t) {
+  var cli = ComandRouter()
+  .option('verbose')
+
+  t.test('defaults', function(t) {
+    cli.command('bam', function(params, options) {
+      t.equal(options.verbose, false)
+      t.end()
+    })
+
+    run(cli, 'bam')
   })
 
-  it('is chain-able', function(){
-    assert.equal(cli.option('foo'), cli)
+  t.test('--option', function(t) {
+    cli.command('bam', function(params, options) {
+      t.equal(options.verbose, true)
+      t.end()
+    })
+
+    run(cli, '--verbose bam')
+  })
+})
+
+test('cli.option(name, opts)', function(t) {
+  var cli = ComandRouter()
+  .option('config', {
+    alias: 'c',
+    default: '.haiku/config',
+    type: path
   })
 
-  describe('when name is a string', function(){
-    it('defaults to false', function(){
-      cli.option('verbose')
-      run('')
-      assert.equal(cli.options.verbose, false)
+  t.test('defaults', function(t) {
+    cli.command('bam', function(params, options) {
+      t.equal(options.config, path.resolve('.haiku/config'))
+      t.end()
     })
 
-    it('creates a boolean option', function(){
-      cli.option('verbose')
-      run('--verbose')
-      assert.equal(cli.options.verbose, true)
-    })
+    run(cli, 'bam')
   })
 
-  describe('with name and opts', function(){
-    before(function(){
-      cli.option('config', { alias: 'c'
-      , default: '.haiku/config'
-      , type: path
-      })
+  t.test('--option', function(t) {
+    cli.command('bam', function(params, options) {
+      t.equal(options.config, path.resolve('some/crazy/place'))
+      t.end()
     })
 
-    it('adds the option', function(){
-      run('--config some/crazy/place')
-
-      assert.equal(cli.options.config, path.resolve('some/crazy/place'))
-    })
-
-    it('applies the default', function(){
-      run('')
-
-      assert.equal(cli.options.config, path.resolve('.haiku/config'))
-    })
-
-    it('accepts the alias', function(){
-      run('-c foo')
-
-      assert.equal(cli.options.config, path.resolve('foo'))
-    })
+    run(cli, '--config some/crazy/place bam')
   })
 
-  describe('with straight opts', function(){
-    before(function(){
-      cli.option({ name: 'foo'
-      , alias: 'f'
-      , default: 'bar'
-      , type: String
-      })
+  t.test('alias', function(t) {
+    cli.command('bam', function(params, options) {
+      t.equal(options.config, path.resolve('some/crazy/place'))
+      t.end()
     })
 
-    it('adds the option', function(){
-      run('--foo bizzle')
+    run(cli, '-c some/crazy/place bam')
+  })
+})
 
-      assert.equal(cli.options.foo, 'bizzle')
+test('cli.option(opts)', function(t) {
+  var cli = ComandRouter()
+  .option({
+    name: 'foo',
+    alias: 'f',
+    default: 'bar',
+    type: String
+  })
+
+  t.test('defaults', function(t) {
+    cli.command('bam', function(params, options) {
+      t.equal(options.foo, 'bar')
+      t.end()
     })
 
-    it('uses the default', function(){
-      run('')
+    run(cli, 'bam')
+  })
 
-      assert.equal(cli.options.foo, 'bar')
+  t.test('--option', function(t) {
+    cli.command('bam', function(params, options) {
+      t.equal(options.foo, 'bizzle')
+      t.end()
     })
 
-    it('accepts the alias', function(){
-      run('-f baz')
+    run(cli, 'bam --foo bizzle')
+  })
 
-      assert.equal(cli.options.foo, 'baz')
+  t.test('alias', function(t) {
+    cli.command('bam', function(params, options) {
+      t.equal(options.foo, 'baz')
+      t.end()
     })
+
+    run(cli, '-f baz bam')
   })
 })

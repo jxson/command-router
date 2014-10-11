@@ -1,5 +1,5 @@
 var path = require('path')
-  , cli = require('../')
+  , cli = require('../')()
 
 // A basic Boolean option that defaults to false
 cli.option('verbose');

@@ -27,7 +27,8 @@ With [npm][npm] do:
 
 In your bin or JS file:
 
-    var cli = require('command-router')
+    var CommandRouter = require('command-router')
+    var cli = CommandRouter()
 
     // Options are optional, and basic boolean options that default to
     // false can be simply defined
@@ -70,7 +71,8 @@ By default, if a route is not found `command-router` will throw unless you add a
 
 # Methods
 
-    var cli = require('command-router')
+    var router = require('command-router')
+    var cli = router([options])
 
 ## cli.command(route, fn)
 
