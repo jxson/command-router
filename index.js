@@ -80,7 +80,7 @@ CommandRouter.prototype.option = function(name, opts) {
   if (opts.alias) cli.shortHands[opts.alias] = '--' + opts.name
 
   if (typeof opts.default !== undefined) {
-    if (opts.type === path) {
+    if (opts.type === path && opts.default) {
       cli.defaults[opts.name] = path.resolve(opts.default)
     } else {
       cli.defaults[opts.name] = opts.default
